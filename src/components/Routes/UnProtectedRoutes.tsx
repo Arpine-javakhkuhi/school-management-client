@@ -2,6 +2,7 @@ import { FC } from "react";
 
 import { Navigate, Outlet } from "react-router-dom";
 import storage from "../../storage/Storage";
+import ResponseMsg from "../ResponseMsg";
 
 const UnprotectedRoutes: FC = () => {
   const accessToken = storage.get("accessToken");

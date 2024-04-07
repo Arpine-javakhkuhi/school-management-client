@@ -14,9 +14,15 @@ import { Grid, Paper, Stack } from "@mui/material";
 
 import { loginValidationSchema } from "./constants/validationSchema";
 import { LoginData } from "./types";
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "../../apollo/mutations/login";
+import { AppRoute } from "../../types/enums";
+import { useNavigate } from "react-router-dom";
 
 const Login: FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const [login, { loading, error, data }] = useMutation(LOGIN);
 
   const {
     register,
@@ -28,7 +34,24 @@ const Login: FC = () => {
 
   const submitForm = async (loginData: LoginData) => {
     console.log("loginData", loginData);
+    login({
+      variables: {
+        input: {
+          email: loginData.email,
+          password: loginData.password,
+        },
+      },
+    });
+
+    if (data?.login?.id) {
+      navigate(AppRoute.Teachers);
+    }
   };
+
+  // console.log("data", data);
+  // if (error) {
+  //   return <Typography variant="h2">Error</Typography>;
+  // }
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -96,7 +119,7 @@ const Login: FC = () => {
               <LoadingButton
                 type="submit"
                 variant="contained"
-                // loading
+                loading={loading}
                 sx={{ width: 100 }}
               >
                 Log in
