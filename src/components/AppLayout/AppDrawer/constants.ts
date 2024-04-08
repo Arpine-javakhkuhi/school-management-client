@@ -1,25 +1,25 @@
-import Groups2TwoToneIcon from "@mui/icons-material/Groups2TwoTone";
-import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import QuizIcon from "@mui/icons-material/Quiz";
+import CastForEducationIcon from "@mui/icons-material/CastForEducation";
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
+import SubjectIcon from "@mui/icons-material/Subject";
 import { AppRoute } from "../../../types/enums";
 
 export const menuItems = [
   {
     id: 1,
     title: "Teachers",
-    icon: AccountTreeIcon,
+    icon: CastForEducationIcon,
     to: `${AppRoute.Teachers}`,
   },
   {
     id: 2,
     title: "Pupils",
-    icon: Groups2TwoToneIcon,
+    icon: LocalLibraryIcon,
     to: `${AppRoute.Pupils}`,
   },
   {
     id: 3,
-    title: "Tests",
-    icon: QuizIcon,
+    title: "Subjects",
+    icon: SubjectIcon,
     to: `${AppRoute.Subjects}`,
   },
 ];

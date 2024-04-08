@@ -12,10 +12,13 @@ import UnprotectedRoutes from "../components/Routes/UnProtectedRoutes";
 import Spinner from "../components/Spinner";
 import storage from "../storage/Storage";
 import Login from "../components/Login";
+import Teachers from "../pages/Teachers";
 
 const routes = createRoutesFromElements(
   <Route>
-    <Route element={<ProtectedRoutes />}></Route>
+    <Route element={<ProtectedRoutes />}>
+      <Route path="teachers" element={<Teachers />} />
+    </Route>
 
     <Route element={<UnprotectedRoutes />}>
       <Route path="login" element={<Login />} />
@@ -30,17 +33,19 @@ const AppRouterProvider: FC = () => {
   const [loading, setLoading] = useState(true);
   const accessToken = storage.get("accessToken");
 
-  useEffect(() => {
-    if (accessToken) {
-      // find current user
-    } else {
-      setLoading(false);
-    }
-  }, [accessToken]);
+  console.log("accessToken route", accessToken);
 
-  if (loading) {
-    return <Spinner />;
-  }
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     // find current user
+  //     // } else {
+  //     setLoading(false);
+  //   }
+  // }, [accessToken]);
+
+  // if (loading) {
+  //   return <Spinner />;
+  // }
 
   return <RouterProvider router={router} />;
 };
