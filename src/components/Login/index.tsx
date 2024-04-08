@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@apollo/client";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { LoadingButton } from "@mui/lab";
@@ -14,9 +15,14 @@ import { Grid, Paper, Stack } from "@mui/material";
 
 import { loginValidationSchema } from "./constants/validationSchema";
 import { LoginData } from "./types";
+import { LOGIN } from "../../apollo/mutations/login";
+import { AppRoute } from "../../types/enums";
+import storage from "../../storage/Storage";
 
 const Login: FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const [login, { loading, error, data }] = useMutation(LOGIN);
 
   const {
     register,
@@ -28,7 +34,26 @@ const Login: FC = () => {
 
   const submitForm = async (loginData: LoginData) => {
     console.log("loginData", loginData);
+    login({
+      variables: {
+        input: {
+          email: loginData.email,
+          password: loginData.password,
+        },
+      },
+    });
   };
+
+  if (data?.login?.id) {
+    console.log("data.login.accessToken", data.login.accessToken);
+    storage.set("accessToken", data.login.accessToken);
+    navigate(AppRoute.Teachers);
+  }
+
+  // console.log("data", data);
+  // if (error) {
+  //   return <Typography variant="h2">Error</Typography>;
+  // }
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -96,7 +121,7 @@ const Login: FC = () => {
               <LoadingButton
                 type="submit"
                 variant="contained"
-                // loading
+                loading={loading}
                 sx={{ width: 100 }}
               >
                 Log in

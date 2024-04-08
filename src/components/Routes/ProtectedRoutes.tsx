@@ -5,13 +5,16 @@ import { Navigate } from "react-router-dom";
 import AppLayout from "../AppLayout";
 import { AppRoute } from "../../types/enums";
 import storage from "../../storage/Storage";
+// import ResponseMsg from "../ResponseMsg";
 
 const ProtectedRoutes: FC = () => {
   const accessToken = storage.get("accessToken");
+  // console.log("accessToken protectedRoutes", accessToken);
 
-  const user = null;
+  // const user = null;
 
-  if (user === null || !accessToken) {
+  // if (user === null || !accessToken) {
+  if (!accessToken) {
     return <Navigate to={AppRoute.Login} />;
   }
 
