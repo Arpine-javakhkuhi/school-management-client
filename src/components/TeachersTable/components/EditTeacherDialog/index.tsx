@@ -13,13 +13,12 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
-import { editUserValidationSchema } from "./constants/validationSchema";
-
 import { Teacher, TeacherInput } from "../../../../__generated__/graphql";
 import { EDIT_TEACHER } from "../../../../apollo/mutations/teacher/editTeacher";
 import { useMutation } from "@apollo/client";
 import { GET_TEACHERS_LIST } from "../../../../apollo/queries/teacher/getTeachersList";
 import { TEACHER_FORM_INPUTS } from "../../constants";
+import { createTeacherValidationSchema } from "../CreateTeacherDialog/constants/validationSchema";
 
 interface EditTeacherProps {
   open: boolean;
@@ -40,7 +39,7 @@ const EditTeacherDialog: FC<EditTeacherProps> = ({
     reset,
     formState: { errors },
   } = useForm<TeacherInput>({
-    resolver: yupResolver(editUserValidationSchema),
+    resolver: yupResolver(createTeacherValidationSchema),
     defaultValues: { ...teacher },
   });
 
@@ -51,8 +50,8 @@ const EditTeacherDialog: FC<EditTeacherProps> = ({
       variables: {
         editTeacherId: +teacher.id,
         editTeacherInput: {
-          firstName,
-          lastName,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
         },
       },
       refetchQueries: [{ query: GET_TEACHERS_LIST }],
@@ -68,7 +67,7 @@ const EditTeacherDialog: FC<EditTeacherProps> = ({
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
-      <DialogTitle>Edit User</DialogTitle>
+      <DialogTitle>Edit Teacher</DialogTitle>
       <DialogContent>
         <Box
           component="form"

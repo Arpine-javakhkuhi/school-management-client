@@ -17,6 +17,7 @@ import { TEACHER_FORM_INPUTS } from "../../constants";
 import { TeacherInput } from "./types";
 import { createTeacherValidationSchema } from "./constants/validationSchema";
 import { CREATE_TEACHER } from "../../../../apollo/mutations/teacher/createTeacher";
+import { GET_TEACHERS_LIST } from "../../../../apollo/queries/teacher/getTeachersList";
 
 interface Props {
   open: boolean;
@@ -39,9 +40,10 @@ const CreateTeacherDialog: FC<Props> = ({ open, handleClose }) => {
     createTeacher({
       variables: {
         createTeacherInput: {
-          firstName: data.firstName,
-          lastName: data.lastName,
+          firstName: data.firstName.trim(),
+          lastName: data.lastName.trim(),
         },
+        refetchQueries: [{ query: GET_TEACHERS_LIST }],
       },
     }).then(() => {
       reset();

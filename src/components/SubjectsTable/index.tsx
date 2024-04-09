@@ -22,12 +22,13 @@ import ResponseMsg from "../ResponseMsg";
 import { GET_SUBJECTS_LIST } from "../../apollo/queries/subject/getSubjectList";
 import DeleteSubjectDialog from "./components/DeleteSubjectDialog";
 import { subjectTeacher } from "../../helpers/findSubjetTeacher";
+import EditSubjectDialog from "./components/EditSubjectDialog";
 
 const SubjectsTable = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [subjectOnDelete, setSubjectOnDelete] = useState<Subject | null>(null);
-  //   const [openEditDialog, setOpenEditDialog] = useState(false);
-  //   const [teacherToEdit, setTeacherToEdit] = useState<Teacher | null>(null);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [subjectToEdit, setSubjectToEdit] = useState<Subject | null>(null);
 
   const { loading, data } = useQuery(GET_SUBJECTS_LIST, {
     fetchPolicy: "cache-and-network",
@@ -40,10 +41,10 @@ const SubjectsTable = () => {
     setSubjectOnDelete(null);
   };
 
-  //   const closeEditModal = () => {
-  //     setOpenEditDialog(false);
-  //     setTeacherToEdit(null);
-  //   };
+  const closeEditModal = () => {
+    setOpenEditDialog(false);
+    setSubjectToEdit(null);
+  };
 
   if (loading) {
     return (
@@ -103,6 +104,7 @@ const SubjectsTable = () => {
                   <TableCell align="left">{subject.name}</TableCell>
                   <TableCell align="left">
                     {subject.teacherId &&
+                      teachersData?.teachers &&
                       subjectTeacher(teachersData?.teachers, subject.teacherId)}
                   </TableCell>
                   <TableCell
@@ -113,17 +115,17 @@ const SubjectsTable = () => {
                     }}
                   >
                     <Box>
-                      {/* <IconButton
+                      <IconButton
                         onClick={() => {
                           setOpenEditDialog(true);
-                          setTeacherToEdit(teacher);
+                          setSubjectToEdit(subject);
                         }}
                         sx={{
                           color: "primary.main",
                         }}
                       >
                         <EditIcon />
-                      </IconButton> */}
+                      </IconButton>
                       <IconButton
                         onClick={() => {
                           setOpenDeleteDialog(true);
@@ -152,13 +154,13 @@ const SubjectsTable = () => {
         />
       )}
 
-      {/* {teacherToEdit && (
-        <EditTeacherDialog
+      {subjectToEdit && (
+        <EditSubjectDialog
           open={openEditDialog}
           handleClose={closeEditModal}
-          teacher={teacherToEdit}
+          subject={subjectToEdit}
         />
-      )} */}
+      )}
     </>
   );
 };

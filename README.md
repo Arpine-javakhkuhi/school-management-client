@@ -17,6 +17,7 @@ You will also see any lint errors in the console.
 ### `npm run generate`
 
 Generate types according to backend schemas
+You need an access token and server url for it. They need to set in 'codegen.ts' file in the root directory
 
 ### `npm test`
 

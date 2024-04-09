@@ -20,10 +20,7 @@ interface ClientProps {
 const createErrorLink = (setResponseMessage?: SetAlert) => {
   return onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
-      graphQLErrors.forEach(({ message, locations, path }) => {
-        console.log(
-          `11111111[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        );
+      graphQLErrors.forEach(({ message }) => {
         setResponseMessage &&
           setResponseMessage({ type: "error", message: message });
       });

@@ -1,8 +1,9 @@
 import { FC } from "react";
+
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/lab/LoadingButton";
+import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import {
   Dialog,
@@ -16,52 +17,67 @@ import {
   Select,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { useMutation, useQuery } from "@apollo/client";
 
-import { SubjectInput, Teacher } from "../../../../__generated__/graphql";
-import { createSubjectValidationSchema } from "./constants/validationSchema";
-import { CREATE_SUBJECT } from "../../../../apollo/mutations/subject/createSubject";
+import {
+  Subject,
+  SubjectInput,
+  Teacher,
+} from "../../../../__generated__/graphql";
+import { useMutation, useQuery } from "@apollo/client";
 import { GET_TEACHERS_LIST } from "../../../../apollo/queries/teacher/getTeachersList";
 import { GET_SUBJECTS_LIST } from "../../../../apollo/queries/subject/getSubjectList";
+import { EDIT_SUBJECT } from "../../../../apollo/mutations/subject/editSubject";
+import { createSubjectValidationSchema } from "../CreateSubjectDialog/constants/validationSchema";
 
-interface Props {
+interface EditSubjectProps {
   open: boolean;
   handleClose: () => void;
+  subject: Subject;
 }
 
-const CreateSubjectDialog: FC<Props> = ({ open, handleClose }) => {
-  const [createSubject, { loading }] = useMutation(CREATE_SUBJECT);
+const EditSubjectDialog: FC<EditSubjectProps> = ({
+  open,
+  handleClose,
+  subject,
+}) => {
+  const [editSubject, { loading }] = useMutation(EDIT_SUBJECT);
   const { data } = useQuery(GET_TEACHERS_LIST);
 
   const {
     handleSubmit,
     register,
-    formState: { errors },
     reset,
+    formState: { errors },
   } = useForm<SubjectInput>({
     resolver: yupResolver(createSubjectValidationSchema),
+    defaultValues: { ...subject },
   });
 
-  const formSubmitHandler = async (data: SubjectInput) => {
-    const input: SubjectInput = { name: data.name.trim() };
-    if (data.teacherId) {
-      input.teacherId = data.teacherId;
+  const formSubmitHandler = async (editedData: SubjectInput) => {
+    const input: SubjectInput = { name: editedData.name.trim() };
+    if (editedData.teacherId) {
+      input.teacherId = editedData.teacherId;
     }
-    createSubject({
+
+    editSubject({
       variables: {
-        createSubjectInput: input,
+        editSubjectId: +subject.id,
+        editSubjectInput: input,
       },
       refetchQueries: [{ query: GET_SUBJECTS_LIST }],
-    }).then(() => {
-      reset();
-      handleClose();
-    });
+    })
+      .then(() => {
+        reset();
+        handleClose();
+      })
+      .catch(() => {});
+
+    handleClose();
   };
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
-      <DialogTitle>Create Subject</DialogTitle>
-
+      <DialogTitle>Edit Subject</DialogTitle>
       <DialogContent>
         <Box
           component="form"
@@ -107,16 +123,8 @@ const CreateSubjectDialog: FC<Props> = ({ open, handleClose }) => {
           </FormControl>
         </Box>
       </DialogContent>
-
       <DialogActions sx={{ marginBottom: 2, paddingX: 3 }}>
-        <Button
-          variant="outlined"
-          sx={{ width: 100 }}
-          onClick={() => {
-            reset();
-            handleClose();
-          }}
-        >
+        <Button variant="outlined" sx={{ width: 100 }} onClick={handleClose}>
           Cancel
         </Button>
         <LoadingButton
@@ -125,10 +133,10 @@ const CreateSubjectDialog: FC<Props> = ({ open, handleClose }) => {
           loading={loading}
           onClick={handleSubmit(formSubmitHandler)}
         >
-          Save
+          Edit
         </LoadingButton>
       </DialogActions>
     </Dialog>
   );
 };
-export default CreateSubjectDialog;
+export default EditSubjectDialog;

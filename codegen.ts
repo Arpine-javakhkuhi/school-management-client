@@ -1,13 +1,13 @@
 import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  // schema: "http://localhost:5050",
   schema: [
     {
       "http://localhost:5050": {
         headers: {
+          // here should be current access token
           Authorization:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEyNjkxNjgxLCJleHAiOjE3MTI2OTM0ODF9.luqnHCtwkcR6XpjeXsF_jP3mQqPAw2U5ZCxEnS-81UA",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEyNjk2MjU3LCJleHAiOjE3MTI2OTgwNTd9.sZEOLCOI_Hy-KPhxO7hIO_UIANHD-l-W7czjW6SPaG8",
         },
       },
     },
@@ -21,7 +21,6 @@ const config: CodegenConfig = {
       },
     },
   },
-  // ignoreNoDocuments: true,
 };
 
 export default config;

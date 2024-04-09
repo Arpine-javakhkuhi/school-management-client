@@ -11,16 +11,16 @@ import { LoadingButton } from "@mui/lab";
 import { useMutation } from "@apollo/client";
 
 import { Subject } from "../../../../__generated__/graphql";
-import { GET_TEACHERS_LIST } from "../../../../apollo/queries/teacher/getTeachersList";
 import { DELETE_SUBJECT } from "../../../../apollo/mutations/subject/deleteSubject";
+import { GET_SUBJECTS_LIST } from "../../../../apollo/queries/subject/getSubjectList";
 
-interface DeleteTeacherProps {
+interface DeleteSubjectProps {
   open: boolean;
   handleClose: () => void;
   subject: Subject;
 }
 
-const DeleteSubjectDialog: FC<DeleteTeacherProps> = ({
+const DeleteSubjectDialog: FC<DeleteSubjectProps> = ({
   open,
   handleClose,
   subject,
@@ -32,7 +32,7 @@ const DeleteSubjectDialog: FC<DeleteTeacherProps> = ({
       variables: {
         deleteSubjectId: +subject.id,
       },
-      refetchQueries: [{ query: GET_TEACHERS_LIST }],
+      refetchQueries: [{ query: GET_SUBJECTS_LIST }],
     }).catch(() => {});
 
     handleClose();
