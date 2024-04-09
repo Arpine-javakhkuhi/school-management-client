@@ -14,6 +14,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+## Environment Variables
+
+Put all the environment variables inside `.env` file located ats the root of the project. The list of all the environment variables is available in `.env.example` file. Note, that if one of the required environment variables is not provided or is invalid (for example PORT is not a number), than the application will fail to start.
+
 ### `npm run generate`
 
 Generate types according to backend schemas
