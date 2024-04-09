@@ -14,10 +14,10 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Grid, Paper, Stack } from "@mui/material";
 
 import { loginValidationSchema } from "./constants/validationSchema";
-import { LoginData } from "./types";
 import { LOGIN } from "../../apollo/mutations/login";
 import { AppRoute } from "../../types/enums";
 import storage from "../../storage/Storage";
+import { LoginInput } from "../../__generated__/graphql";
 
 const Login: FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,11 +34,11 @@ const Login: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginData>({
+  } = useForm<LoginInput>({
     resolver: yupResolver(loginValidationSchema),
   });
 
-  const submitForm = async (loginData: LoginData) => {
+  const submitForm = async (loginData: LoginInput) => {
     login({
       variables: {
         input: {

@@ -7,18 +7,7 @@ interface Props {
   style?: React.CSSProperties;
 }
 
-const Spinner: FC<Props> = ({ style = {}, local = false }) => {
-  if (local) {
-    return (
-      <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-        style={style}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
-
+const Spinner: FC<Props> = ({ style = {} }) => {
   return (
     <Box
       sx={{

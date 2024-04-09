@@ -21,7 +21,7 @@ import { Subject } from "../../__generated__/graphql";
 import ResponseMsg from "../ResponseMsg";
 import { GET_SUBJECTS_LIST } from "../../apollo/queries/subject/getSubjectList";
 import DeleteSubjectDialog from "./components/DeleteSubjectDialog";
-import { subjectTeacher } from "../../helpers/findSubjetTeacher";
+import { subjectTeacher } from "../../utils/findSubjetTeacher";
 import EditSubjectDialog from "./components/EditSubjectDialog";
 
 const SubjectsTable = () => {

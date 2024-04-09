@@ -9,7 +9,7 @@ import {
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 import storage from "../../storage/Storage";
-import { checkToken } from "../../components/utils/checkAccessToken";
+import { checkToken } from "../../utils/checkAccessToken";
 import { SetAlert } from "../../components/ErrorHandler/types";
 
 interface ClientProps {

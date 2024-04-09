@@ -1,5 +1,5 @@
-import storage from "../../storage/Storage";
-import { AppRoute } from "../../types/enums";
+import storage from "../storage/Storage";
+import { AppRoute } from "../types/enums";
 
 export const logout = () => {
   storage.remove("accessToken");

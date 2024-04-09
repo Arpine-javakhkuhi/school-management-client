@@ -4,8 +4,6 @@ import { Navigate, Outlet } from "react-router-dom";
 import storage from "../../storage/Storage";
 import { AppRoute } from "../../types/enums";
 
-// import ResponseMsg from "../ResponseMsg";
-
 const UnprotectedRoutes: FC = () => {
   const accessToken = storage.get("accessToken");
   if (accessToken) {

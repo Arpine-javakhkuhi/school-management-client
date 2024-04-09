@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 
 import schoolLogo from "../../../assets/images/logo.png";
 import { AppRoute } from "../../../types/enums";
-import { logout } from "../../utils/logout";
+import { logout } from "../../../utils/logout";
 
 interface Props {
   open?: boolean;
