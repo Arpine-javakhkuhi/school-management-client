@@ -10,9 +10,9 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { useMutation } from "@apollo/client";
 
-import { DELETE_TEACHER } from "../../apollo/mutations/teacher/deleteTeacher";
-import { Teacher } from "../../__generated__/graphql";
-import { GET_TEACHERS_LIST } from "../../apollo/queries/teacher/getTeachersList";
+import { DELETE_TEACHER } from "../../../../apollo/mutations/teacher/deleteTeacher";
+import { Teacher } from "../../../../__generated__/graphql";
+import { GET_TEACHERS_LIST } from "../../../../apollo/queries/teacher/getTeachersList";
 
 interface DeleteTeacherProps {
   open: boolean;
@@ -28,20 +28,19 @@ const DeleteTeacherDialog: FC<DeleteTeacherProps> = ({
   const [deleteTeacher, { loading }] = useMutation(DELETE_TEACHER);
 
   const handleDelete = async () => {
-    if (teacher.id) {
-      deleteTeacher({
-        variables: {
-          deleteTeacherId: +teacher.id,
-        },
-        refetchQueries: [{ query: GET_TEACHERS_LIST }],
-      }).catch(() => {});
-    }
+    deleteTeacher({
+      variables: {
+        deleteTeacherId: +teacher.id,
+      },
+      refetchQueries: [{ query: GET_TEACHERS_LIST }],
+    }).catch(() => {});
+
     handleClose();
   };
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
-      <DialogTitle>Delete User</DialogTitle>
+      <DialogTitle>Delete Teacher</DialogTitle>
 
       <DialogContent>
         <Typography variant="body1">

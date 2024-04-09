@@ -32,10 +32,18 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createSubject: Subject;
   createTeacher: Teacher;
+  deleteSubject?: Maybe<SubjectSuccess>;
   deleteTeacher?: Maybe<TeacherSuccess>;
+  editSubject?: Maybe<SubjectSuccess>;
   editTeacher?: Maybe<TeacherSuccess>;
   login?: Maybe<LoggedUser>;
+};
+
+
+export type MutationCreateSubjectArgs = {
+  createSubjectInput?: InputMaybe<SubjectInput>;
 };
 
 
@@ -44,7 +52,18 @@ export type MutationCreateTeacherArgs = {
 };
 
 
+export type MutationDeleteSubjectArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteTeacherArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationEditSubjectArgs = {
+  editSubjectInput?: InputMaybe<TeacherInput>;
   id: Scalars['ID']['input'];
 };
 
@@ -61,14 +80,33 @@ export type MutationLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  getSubjects?: Maybe<Array<Maybe<Subject>>>;
   getTeachers?: Maybe<Array<Maybe<Teacher>>>;
   getUserById: User;
+};
+
+export type Subject = {
+  __typename?: 'Subject';
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  teacherId?: Maybe<Scalars['ID']['output']>;
+};
+
+export type SubjectInput = {
+  name: Scalars['String']['input'];
+  teacherId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type SubjectSuccess = {
+  __typename?: 'SubjectSuccess';
+  isSuccess?: Maybe<Scalars['Boolean']['output']>;
+  message: Scalars['String']['output'];
 };
 
 export type Teacher = {
   __typename?: 'Teacher';
   firstName: Scalars['String']['output'];
-  id?: Maybe<Scalars['ID']['output']>;
+  id: Scalars['ID']['output'];
   lastName: Scalars['String']['output'];
 };
 
@@ -92,13 +130,6 @@ export type User = {
   password: Scalars['String']['output'];
 };
 
-export type CreateTeacherMutationVariables = Exact<{
-  createTeacherInput?: InputMaybe<TeacherInput>;
-}>;
-
-
-export type CreateTeacherMutation = { __typename?: 'Mutation', createTeacher: { __typename?: 'Teacher', id?: string | null } };
-
 export type LoginMutationVariables = Exact<{
   input?: InputMaybe<LoginInput>;
 }>;
@@ -106,6 +137,50 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoggedUser', id?: string | null, accessToken: string } | null };
 
+export type CreateSubjectMutationVariables = Exact<{
+  createSubjectInput?: InputMaybe<SubjectInput>;
+}>;
 
-export const CreateTeacherDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTeacher"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createTeacherInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TeacherInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTeacher"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createTeacherInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createTeacherInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateTeacherMutation, CreateTeacherMutationVariables>;
+
+export type CreateSubjectMutation = { __typename?: 'Mutation', createSubject: { __typename?: 'Subject', id: string } };
+
+export type CreateTeacherMutationVariables = Exact<{
+  createTeacherInput?: InputMaybe<TeacherInput>;
+}>;
+
+
+export type CreateTeacherMutation = { __typename?: 'Mutation', createTeacher: { __typename?: 'Teacher', id: string } };
+
+export type DeleteTeacherMutationVariables = Exact<{
+  deleteTeacherId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteTeacherMutation = { __typename?: 'Mutation', deleteTeacher?: { __typename?: 'TeacherSuccess', message: string, isSuccess?: boolean | null } | null };
+
+export type EditTeacherMutationVariables = Exact<{
+  editTeacherId: Scalars['ID']['input'];
+  editTeacherInput?: InputMaybe<TeacherInput>;
+}>;
+
+
+export type EditTeacherMutation = { __typename?: 'Mutation', editTeacher?: { __typename?: 'TeacherSuccess', isSuccess?: boolean | null, message: string } | null };
+
+export type GetSubjectsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSubjectsQuery = { __typename?: 'Query', subjects?: Array<{ __typename?: 'Subject', id: string, name: string, teacherId?: string | null } | null> | null };
+
+export type GetTeachersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTeachersQuery = { __typename?: 'Query', teachers?: Array<{ __typename?: 'Teacher', id: string, firstName: string, lastName: string } | null> | null };
+
+
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
+export const CreateSubjectDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateSubject"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createSubjectInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"SubjectInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createSubject"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createSubjectInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createSubjectInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateSubjectMutation, CreateSubjectMutationVariables>;
+export const CreateTeacherDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTeacher"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createTeacherInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TeacherInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTeacher"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createTeacherInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createTeacherInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateTeacherMutation, CreateTeacherMutationVariables>;
+export const DeleteTeacherDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteTeacher"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"deleteTeacherId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTeacher"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"deleteTeacherId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}},{"kind":"Field","name":{"kind":"Name","value":"isSuccess"}}]}}]}}]} as unknown as DocumentNode<DeleteTeacherMutation, DeleteTeacherMutationVariables>;
+export const EditTeacherDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EditTeacher"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"editTeacherId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"editTeacherInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TeacherInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"editTeacher"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"editTeacherId"}}},{"kind":"Argument","name":{"kind":"Name","value":"editTeacherInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"editTeacherInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isSuccess"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<EditTeacherMutation, EditTeacherMutationVariables>;
+export const GetSubjectsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"subjects"},"name":{"kind":"Name","value":"getSubjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"teacherId"}}]}}]}}]} as unknown as DocumentNode<GetSubjectsQuery, GetSubjectsQueryVariables>;
+export const GetTeachersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTeachers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"teachers"},"name":{"kind":"Name","value":"getTeachers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}}]} as unknown as DocumentNode<GetTeachersQuery, GetTeachersQueryVariables>;

@@ -13,10 +13,10 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { useMutation } from "@apollo/client";
 
-import { TEACHER_FORM_INPUTS } from "./constants";
+import { TEACHER_FORM_INPUTS } from "../../constants";
 import { TeacherInput } from "./types";
 import { createTeacherValidationSchema } from "./constants/validationSchema";
-import { CREATE_TEACHER } from "../../apollo/mutations/teacher/createTeacher";
+import { CREATE_TEACHER } from "../../../../apollo/mutations/teacher/createTeacher";
 
 interface Props {
   open: boolean;

@@ -17,30 +17,33 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useQuery } from "@apollo/client";
 
 import { GET_TEACHERS_LIST } from "../../apollo/queries/teacher/getTeachersList";
-import { Teacher } from "../../__generated__/graphql";
+import { Subject } from "../../__generated__/graphql";
 import ResponseMsg from "../ResponseMsg";
-import DeleteTeacherDialog from "./components/DeleteTeacherDialog";
-import EditTeacherDialog from "./components/EditTeacherDialog";
+import { GET_SUBJECTS_LIST } from "../../apollo/queries/subject/getSubjectList";
+import DeleteSubjectDialog from "./components/DeleteSubjectDialog";
+import { subjectTeacher } from "../../helpers/findSubjetTeacher";
 
-const TeachersTable = () => {
+const SubjectsTable = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [teacherOnDelete, setTeacherOnDelete] = useState<Teacher | null>(null);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [teacherToEdit, setTeacherToEdit] = useState<Teacher | null>(null);
+  const [subjectOnDelete, setSubjectOnDelete] = useState<Subject | null>(null);
+  //   const [openEditDialog, setOpenEditDialog] = useState(false);
+  //   const [teacherToEdit, setTeacherToEdit] = useState<Teacher | null>(null);
 
-  const { loading, data } = useQuery(GET_TEACHERS_LIST, {
+  const { loading, data } = useQuery(GET_SUBJECTS_LIST, {
     fetchPolicy: "cache-and-network",
   });
 
+  const { data: teachersData } = useQuery(GET_TEACHERS_LIST);
+
   const closeDeleteModal = () => {
     setOpenDeleteDialog(false);
-    setTeacherOnDelete(null);
+    setSubjectOnDelete(null);
   };
 
-  const closeEditModal = () => {
-    setOpenEditDialog(false);
-    setTeacherToEdit(null);
-  };
+  //   const closeEditModal = () => {
+  //     setOpenEditDialog(false);
+  //     setTeacherToEdit(null);
+  //   };
 
   if (loading) {
     return (
@@ -80,24 +83,28 @@ const TeachersTable = () => {
             >
               <TableRow>
                 <TableCell align="left" sx={{ width: "40%" }}>
-                  First Name
+                  Name
                 </TableCell>
                 <TableCell align="left" sx={{ width: "40%" }}>
-                  Last Name
+                  Teacher
                 </TableCell>
+
                 <TableCell align="left" sx={{ width: "20%" }}>
                   Actions
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {data?.teachers?.map((teacher: Teacher) => (
+              {data?.subjects?.map((subject: Subject) => (
                 <TableRow
-                  key={teacher.id}
+                  key={subject.id}
                   sx={{ "& td": { border: 0, padding: "3px 15px" } }}
                 >
-                  <TableCell align="left">{teacher.firstName}</TableCell>
-                  <TableCell align="left">{teacher.lastName}</TableCell>
+                  <TableCell align="left">{subject.name}</TableCell>
+                  <TableCell align="left">
+                    {subject.teacherId &&
+                      subjectTeacher(teachersData?.teachers, subject.teacherId)}
+                  </TableCell>
                   <TableCell
                     style={{
                       display: "flex",
@@ -106,7 +113,7 @@ const TeachersTable = () => {
                     }}
                   >
                     <Box>
-                      <IconButton
+                      {/* <IconButton
                         onClick={() => {
                           setOpenEditDialog(true);
                           setTeacherToEdit(teacher);
@@ -116,11 +123,11 @@ const TeachersTable = () => {
                         }}
                       >
                         <EditIcon />
-                      </IconButton>
+                      </IconButton> */}
                       <IconButton
                         onClick={() => {
                           setOpenDeleteDialog(true);
-                          setTeacherOnDelete(teacher);
+                          setSubjectOnDelete(subject);
                         }}
                         sx={{
                           color: "primary.main",
@@ -137,23 +144,23 @@ const TeachersTable = () => {
         </TableContainer>
       </Paper>
 
-      {teacherOnDelete && (
-        <DeleteTeacherDialog
+      {subjectOnDelete && (
+        <DeleteSubjectDialog
           open={openDeleteDialog}
           handleClose={closeDeleteModal}
-          teacher={teacherOnDelete}
+          subject={subjectOnDelete}
         />
       )}
 
-      {teacherToEdit && (
+      {/* {teacherToEdit && (
         <EditTeacherDialog
           open={openEditDialog}
           handleClose={closeEditModal}
           teacher={teacherToEdit}
         />
-      )}
+      )} */}
     </>
   );
 };
 
-export default TeachersTable;
+export default SubjectsTable;

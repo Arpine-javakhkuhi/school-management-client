@@ -6,6 +6,7 @@ const ERROR_MESSAGES = {
   emailRequiredField: "E-mail is required.",
   firstNameRegex: "First name should contain only letters and numbers.",
   lastNameRegex: "Last name should contain only letters and numbers.",
+  subjectNameRequiredField: "Subject name is required",
 };
 
 export default ERROR_MESSAGES;

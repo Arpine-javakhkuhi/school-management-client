@@ -4,10 +4,10 @@ import Fab from "@mui/material/Fab";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-import TeachersTable from "../../components/TeachersTable";
-import CreateTeacherDialog from "../../components/TeachersTable/components/CreateTeacherDialog";
+import CreateSubjectDialog from "../../components/SubjectsTable/components/CreateSubjectDialog";
+import SubjectsTable from "../../components/SubjectsTable";
 
-const Teachers: FC = () => {
+const Subjects: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -21,10 +21,10 @@ const Teachers: FC = () => {
   return (
     <Box>
       <Typography sx={{ mb: 2 }} variant="h6">
-        Teachers
+        Subjects
       </Typography>
 
-      <TeachersTable />
+      <SubjectsTable />
 
       <Fab
         color="primary"
@@ -38,9 +38,9 @@ const Teachers: FC = () => {
         <AddIcon />
       </Fab>
 
-      <CreateTeacherDialog handleClose={closeModal} open={isOpen} />
+      <CreateSubjectDialog handleClose={closeModal} open={isOpen} />
     </Box>
   );
 };
 
-export default Teachers;
+export default Subjects;

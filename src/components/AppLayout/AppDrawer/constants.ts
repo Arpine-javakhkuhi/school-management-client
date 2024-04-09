@@ -12,14 +12,14 @@ export const menuItems = [
   },
   {
     id: 2,
-    title: "Pupils",
-    icon: LocalLibraryIcon,
-    to: `${AppRoute.Pupils}`,
-  },
-  {
-    id: 3,
     title: "Subjects",
     icon: SubjectIcon,
     to: `${AppRoute.Subjects}`,
+  },
+  {
+    id: 3,
+    title: "Pupils",
+    icon: LocalLibraryIcon,
+    to: `${AppRoute.Pupils}`,
   },
 ];

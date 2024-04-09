@@ -13,13 +13,13 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
-import { TEACHER_FORM_INPUTS } from "../CreateTeacherDialog/constants";
 import { editUserValidationSchema } from "./constants/validationSchema";
 
-import { Teacher, TeacherInput } from "../../__generated__/graphql";
-import { EDIT_TEACHER } from "../../apollo/mutations/teacher/editTeacher";
+import { Teacher, TeacherInput } from "../../../../__generated__/graphql";
+import { EDIT_TEACHER } from "../../../../apollo/mutations/teacher/editTeacher";
 import { useMutation } from "@apollo/client";
-import { GET_TEACHERS_LIST } from "../../apollo/queries/teacher/getTeachersList";
+import { GET_TEACHERS_LIST } from "../../../../apollo/queries/teacher/getTeachersList";
+import { TEACHER_FORM_INPUTS } from "../../constants";
 
 interface EditTeacherProps {
   open: boolean;
@@ -44,26 +44,24 @@ const EditTeacherDialog: FC<EditTeacherProps> = ({
     defaultValues: { ...teacher },
   });
 
-  const formSubmitHandler = async (editedData: Teacher) => {
+  const formSubmitHandler = async (editedData: TeacherInput) => {
     const { firstName, lastName } = editedData;
 
-    if (teacher.id) {
-      editTeacher({
-        variables: {
-          editTeacherId: +teacher.id,
-          editTeacherInput: {
-            firstName,
-            lastName,
-          },
+    editTeacher({
+      variables: {
+        editTeacherId: +teacher.id,
+        editTeacherInput: {
+          firstName,
+          lastName,
         },
-        refetchQueries: [{ query: GET_TEACHERS_LIST }],
+      },
+      refetchQueries: [{ query: GET_TEACHERS_LIST }],
+    })
+      .then(() => {
+        reset();
+        handleClose();
       })
-        .then(() => {
-          reset();
-          handleClose();
-        })
-        .catch(() => {});
-    }
+      .catch(() => {});
 
     handleClose();
   };
