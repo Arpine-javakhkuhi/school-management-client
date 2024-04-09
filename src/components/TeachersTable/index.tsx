@@ -1,6 +1,9 @@
 import {
+  Box,
+  CircularProgress,
   IconButton,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -11,45 +14,73 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_TEACHERS_LIST } from "../../apollo/queries/teacher/getTeachersList";
+import { Teacher } from "../../__generated__/graphql";
+import { DELETE_TEACHER } from "../../apollo/mutations/teacher/deleteTeacher";
+import ResponseMsg from "../ResponseMsg";
+import DeleteTeacherDialog from "../DeleteTeacherDialog";
+import { useState } from "react";
+import EditTeacherDialog from "../EditTeacherDialog";
 
 const TeachersTable = () => {
-  const teachers = [
-    {
-      id: 1,
-      firstName: "Aaaa",
-      lastName: "AAA",
-      email: "email@test.com",
-      subjects: ["Math"],
-    },
-    {
-      id: 2,
-      firstName: "BBB",
-      lastName: "BBB",
-      email: "email@test.com",
-      subjects: ["Literature"],
-    },
-    {
-      id: 3,
-      firstName: "CCC",
-      lastName: "CCC",
-      email: "email@test.com",
-      subjects: ["Music", "Art"],
-    },
-  ];
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [teacherOnDelete, setTeacherOnDelete] = useState<Teacher | null>(null);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [teacherToEdit, setTeacherToEdit] = useState<Teacher | null>(null);
+
+  const { loading, data } = useQuery(GET_TEACHERS_LIST, {
+    fetchPolicy: "cache-and-network",
+  });
+  // const [deleteTeacher, { data: deleteInfo }] = useMutation(DELETE_TEACHER);
+  console.log("data", data);
+
+  // console.log("deleteInfo", deleteInfo);
+  // const handleDeleteTeacher = (id: string) => {
+  //   deleteTeacher({
+  //     variables: {
+  //       deleteTeacherId: +id,
+  //     },
+  //     //     refetchQueries: [
+  //     //   {query: GET_TEACHERS_LIST},
+  //     // ]
+  //   }).catch(() => {});
+  // };
+
+  const closeDeleteModal = () => {
+    setOpenDeleteDialog(false);
+    setTeacherOnDelete(null);
+  };
+
+  const closeEditModal = () => {
+    setOpenEditDialog(false);
+    setTeacherToEdit(null);
+  };
+
+  if (loading) {
+    return (
+      <Stack alignItems="center">
+        <CircularProgress />
+      </Stack>
+    );
+  }
   return (
     <>
-      {/* {loading ? (
-        <Stack alignItems="center">
-          <CircularProgress />
-        </Stack>
-      ) : ( */}
-      <Paper sx={{ width: "90%" }}>
+      {data.isSuccess && (
+        <ResponseMsg
+          message={data.message}
+          setAlert={data.isSuccess}
+          type="success"
+        />
+      )}
+      <Paper sx={{ width: "90%", overflow: "hidden" }}>
         <TableContainer
           sx={{
             maxHeight: 445,
           }}
         >
           <Table
+            stickyHeader
             sx={{
               height: "max-content",
             }}
@@ -63,29 +94,26 @@ const TeachersTable = () => {
               }}
             >
               <TableRow>
-                <TableCell align="left" sx={{ width: "25%" }}>
+                <TableCell align="left" sx={{ width: "40%" }}>
                   First Name
                 </TableCell>
-                <TableCell align="left" sx={{ width: "25%" }}>
+                <TableCell align="left" sx={{ width: "40%" }}>
                   Last Name
                 </TableCell>
-                <TableCell align="left" sx={{ width: "25%" }}>
-                  Email
-                </TableCell>
-                <TableCell align="left" sx={{ width: "25%" }}>
-                  Subjects
+                <TableCell align="left" sx={{ width: "20%" }}>
+                  Actions
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {teachers?.map((teacher) => (
+              {data?.teachers?.map((teacher: Teacher) => (
                 <TableRow
                   key={teacher.id}
                   sx={{ "& td": { border: 0, padding: "3px 15px" } }}
                 >
                   <TableCell align="left">{teacher.firstName}</TableCell>
                   <TableCell align="left">{teacher.lastName}</TableCell>
-                  <TableCell align="left">{teacher.email}</TableCell>
+                  {/* <TableCell align="left">{teacher.email}</TableCell> */}
                   <TableCell
                     style={{
                       display: "flex",
@@ -93,18 +121,21 @@ const TeachersTable = () => {
                       justifyContent: "space-between",
                     }}
                   >
-                    {teacher?.subjects?.map((subject, index) => (
-                      <Typography
-                        variant="subtitle1"
-                        key={`${teacher.id}-${subject}`}
-                      >
-                        {subject}
-                        {index !== teacher?.subjects.length - 1 ? "," : ""}
-                      </Typography>
-                    ))}
-                    <div>
+                    {/* {teacher?.subjects?.map((subject, index) => (
+                        <Typography
+                          variant="subtitle1"
+                          key={`${teacher.id}-${subject}`}
+                        >
+                          {subject}
+                          {index !== teacher?.subjects.length - 1 ? "," : ""}
+                        </Typography>
+                      ))} */}
+                    <Box>
                       <IconButton
-                        // onClick={() => setEditedUserField(singleUser.id)}
+                        onClick={() => {
+                          setOpenEditDialog(true);
+                          setTeacherToEdit(teacher);
+                        }}
                         sx={{
                           color: "primary.main",
                         }}
@@ -112,15 +143,20 @@ const TeachersTable = () => {
                         <EditIcon />
                       </IconButton>
                       <IconButton
-                        // onClick={() => setDeletedUserField(teacher.id)}
-
+                        onClick={
+                          () => {
+                            setOpenDeleteDialog(true);
+                            setTeacherOnDelete(teacher);
+                          }
+                          // teacher.id && handleDeleteTeacher(teacher.id)
+                        }
                         sx={{
                           color: "primary.main",
                         }}
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </div>
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))}
@@ -128,7 +164,22 @@ const TeachersTable = () => {
           </Table>
         </TableContainer>
       </Paper>
-      {/* )} */}
+
+      {teacherOnDelete && (
+        <DeleteTeacherDialog
+          open={openDeleteDialog}
+          handleClose={closeDeleteModal}
+          teacher={teacherOnDelete}
+        />
+      )}
+
+      {teacherToEdit && (
+        <EditTeacherDialog
+          open={openEditDialog}
+          handleClose={closeEditModal}
+          teacher={teacherToEdit}
+        />
+      )}
     </>
 
     // {rowCountArray.map((row, index) => (

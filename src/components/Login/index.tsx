@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -24,6 +24,12 @@ const Login: FC = () => {
   const navigate = useNavigate();
   const [login, { loading, error, data }] = useMutation(LOGIN);
 
+  useEffect(() => {
+    if (data?.login?.id && !error) {
+      storage.set("accessToken", data.login.accessToken);
+      navigate(AppRoute.Teachers);
+    }
+  }, [data, navigate, error]);
   const {
     register,
     handleSubmit,
@@ -41,18 +47,8 @@ const Login: FC = () => {
           password: loginData.password,
         },
       },
-    }).then((res) => {
-      if (res?.data?.login?.id) {
-        storage.set("accessToken", res.data.login.accessToken);
-        navigate(AppRoute.Teachers);
-      }
-    });
+    }).catch(() => {});
   };
-
-  // console.log("data", data);
-  // if (error) {
-  //   return <Typography variant="h2">Error</Typography>;
-  // }
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 

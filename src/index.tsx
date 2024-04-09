@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ApolloProvider } from "@apollo/client";
 import App from "./App";
-import client from "./apollo/client";
+import ErrorHandler from "./components/ErrorHandler";
+import CustomApolloProvider from "./apollo/CustomApolloProvider";
+import { SetAlert } from "./components/ErrorHandler/types";
 import "./index.css";
 
 const root = ReactDOM.createRoot(
@@ -11,8 +12,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <ErrorHandler>
+      {(setResponseMessage: SetAlert) => (
+        <CustomApolloProvider setResponseMessage={setResponseMessage}>
+          <App />
+        </CustomApolloProvider>
+      )}
+    </ErrorHandler>
   </React.StrictMode>
 );

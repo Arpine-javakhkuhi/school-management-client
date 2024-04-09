@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 
 import schoolLogo from "../../../assets/images/logo.png";
 import { AppRoute } from "../../../types/enums";
-import storage from "../../../storage/Storage";
+import { logout } from "../../utils/logout";
 
 interface Props {
   open?: boolean;
@@ -39,12 +39,7 @@ const AppBar = styled(MuiAppBar, {
 const AppHeader: FC<Props> = ({ open, setOpen }) => {
   const navigate = useNavigate();
   const toggleDrawer = () => {
-    setOpen?.(!open);
-  };
-
-  const logout = () => {
-    storage.remove("accessToken");
-    navigate(AppRoute.Login);
+    setOpen && setOpen(!open);
   };
 
   return (

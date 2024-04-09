@@ -16,7 +16,7 @@ import { useMutation } from "@apollo/client";
 import { TEACHER_FORM_INPUTS } from "./constants";
 import { TeacherInput } from "./types";
 import { createTeacherValidationSchema } from "./constants/validationSchema";
-import { CREATE_TEACHER } from "../../apollo/mutations/createTeacher";
+import { CREATE_TEACHER } from "../../apollo/mutations/teacher/createTeacher";
 
 interface Props {
   open: boolean;
@@ -24,7 +24,7 @@ interface Props {
 }
 
 const CreateTeacherDialog: FC<Props> = ({ open, handleClose }) => {
-  const [createTeacher, { loading, error, data }] = useMutation(CREATE_TEACHER);
+  const [createTeacher, { loading }] = useMutation(CREATE_TEACHER);
 
   const {
     handleSubmit,
@@ -43,8 +43,7 @@ const CreateTeacherDialog: FC<Props> = ({ open, handleClose }) => {
           lastName: data.lastName,
         },
       },
-    }).then((res) => {
-      console.log("res", res);
+    }).then(() => {
       reset();
       handleClose();
     });
@@ -91,7 +90,7 @@ const CreateTeacherDialog: FC<Props> = ({ open, handleClose }) => {
         <LoadingButton
           variant="contained"
           sx={{ width: 100 }}
-          //   loading
+          loading={loading}
           onClick={handleSubmit(formSubmitHandler)}
         >
           Save

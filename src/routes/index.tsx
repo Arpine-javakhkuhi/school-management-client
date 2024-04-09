@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
 import {
   createBrowserRouter,
@@ -9,8 +9,7 @@ import {
 } from "react-router-dom";
 import ProtectedRoutes from "../components/Routes/ProtectedRoutes";
 import UnprotectedRoutes from "../components/Routes/UnProtectedRoutes";
-import Spinner from "../components/Spinner";
-import storage from "../storage/Storage";
+
 import Login from "../components/Login";
 import Teachers from "../pages/Teachers";
 
