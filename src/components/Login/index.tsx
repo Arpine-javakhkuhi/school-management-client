@@ -39,7 +39,6 @@ const Login: FC = () => {
   });
 
   const submitForm = async (loginData: LoginData) => {
-    console.log("loginData", loginData);
     login({
       variables: {
         input: {

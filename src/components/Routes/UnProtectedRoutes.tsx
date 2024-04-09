@@ -8,20 +8,11 @@ import { AppRoute } from "../../types/enums";
 
 const UnprotectedRoutes: FC = () => {
   const accessToken = storage.get("accessToken");
-  // console.log("accessToken UnprotectedRoutes", accessToken);
-
-  // const user = null;
-
-  // if (user && accessToken) {
   if (accessToken) {
     return <Navigate to={AppRoute.Teachers} />;
   }
 
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+  return <Outlet />;
 };
 
 export default UnprotectedRoutes;

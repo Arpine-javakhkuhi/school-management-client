@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   CircularProgress,
@@ -10,17 +11,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+
 import { GET_TEACHERS_LIST } from "../../apollo/queries/teacher/getTeachersList";
 import { Teacher } from "../../__generated__/graphql";
-import { DELETE_TEACHER } from "../../apollo/mutations/teacher/deleteTeacher";
 import ResponseMsg from "../ResponseMsg";
 import DeleteTeacherDialog from "../DeleteTeacherDialog";
-import { useState } from "react";
 import EditTeacherDialog from "../EditTeacherDialog";
 
 const TeachersTable = () => {
@@ -32,20 +31,6 @@ const TeachersTable = () => {
   const { loading, data } = useQuery(GET_TEACHERS_LIST, {
     fetchPolicy: "cache-and-network",
   });
-  // const [deleteTeacher, { data: deleteInfo }] = useMutation(DELETE_TEACHER);
-  console.log("data", data);
-
-  // console.log("deleteInfo", deleteInfo);
-  // const handleDeleteTeacher = (id: string) => {
-  //   deleteTeacher({
-  //     variables: {
-  //       deleteTeacherId: +id,
-  //     },
-  //     //     refetchQueries: [
-  //     //   {query: GET_TEACHERS_LIST},
-  //     // ]
-  //   }).catch(() => {});
-  // };
 
   const closeDeleteModal = () => {
     setOpenDeleteDialog(false);
@@ -113,7 +98,6 @@ const TeachersTable = () => {
                 >
                   <TableCell align="left">{teacher.firstName}</TableCell>
                   <TableCell align="left">{teacher.lastName}</TableCell>
-                  {/* <TableCell align="left">{teacher.email}</TableCell> */}
                   <TableCell
                     style={{
                       display: "flex",
@@ -143,13 +127,10 @@ const TeachersTable = () => {
                         <EditIcon />
                       </IconButton>
                       <IconButton
-                        onClick={
-                          () => {
-                            setOpenDeleteDialog(true);
-                            setTeacherOnDelete(teacher);
-                          }
-                          // teacher.id && handleDeleteTeacher(teacher.id)
-                        }
+                        onClick={() => {
+                          setOpenDeleteDialog(true);
+                          setTeacherOnDelete(teacher);
+                        }}
                         sx={{
                           color: "primary.main",
                         }}
@@ -181,16 +162,6 @@ const TeachersTable = () => {
         />
       )}
     </>
-
-    // {rowCountArray.map((row, index) => (
-    //     <TableRow key={index}>
-    //        {colCountArray.map((col, index) => (
-    //          <TableCell key={index}>
-    //            Row {row} - Col {col}
-    //          </TableCell>
-    //         ))}
-    //     </TableRow>
-    //   ))}
   );
 };
 

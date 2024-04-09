@@ -10,13 +10,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  Checkbox,
-  FormControlLabel,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
@@ -26,17 +19,20 @@ import { editUserValidationSchema } from "./constants/validationSchema";
 import { Teacher, TeacherInput } from "../../__generated__/graphql";
 import { EDIT_TEACHER } from "../../apollo/mutations/teacher/editTeacher";
 import { useMutation } from "@apollo/client";
-import ResponseMsg from "../ResponseMsg";
 import { GET_TEACHERS_LIST } from "../../apollo/queries/teacher/getTeachersList";
 
-interface Props {
+interface EditTeacherProps {
   open: boolean;
   handleClose: () => void;
   teacher: Teacher;
 }
 
-const EditTeacherDialog: FC<Props> = ({ open, handleClose, teacher }) => {
-  const [editTeacher, { loading, data }] = useMutation(EDIT_TEACHER);
+const EditTeacherDialog: FC<EditTeacherProps> = ({
+  open,
+  handleClose,
+  teacher,
+}) => {
+  const [editTeacher, { loading }] = useMutation(EDIT_TEACHER);
 
   const {
     handleSubmit,
@@ -49,8 +45,8 @@ const EditTeacherDialog: FC<Props> = ({ open, handleClose, teacher }) => {
   });
 
   const formSubmitHandler = async (editedData: Teacher) => {
-    console.log("editedData", editedData);
     const { firstName, lastName } = editedData;
+
     if (teacher.id) {
       editTeacher({
         variables: {

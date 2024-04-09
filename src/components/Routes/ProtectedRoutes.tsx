@@ -9,11 +9,7 @@ import storage from "../../storage/Storage";
 
 const ProtectedRoutes: FC = () => {
   const accessToken = storage.get("accessToken");
-  // console.log("accessToken protectedRoutes", accessToken);
 
-  // const user = null;
-
-  // if (user === null || !accessToken) {
   if (!accessToken) {
     return <Navigate to={AppRoute.Login} />;
   }

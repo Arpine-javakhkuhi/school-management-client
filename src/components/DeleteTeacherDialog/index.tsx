@@ -11,7 +11,6 @@ import { LoadingButton } from "@mui/lab";
 import { useMutation } from "@apollo/client";
 
 import { DELETE_TEACHER } from "../../apollo/mutations/teacher/deleteTeacher";
-import ResponseMsg from "../ResponseMsg";
 import { Teacher } from "../../__generated__/graphql";
 import { GET_TEACHERS_LIST } from "../../apollo/queries/teacher/getTeachersList";
 
@@ -26,7 +25,7 @@ const DeleteTeacherDialog: FC<DeleteTeacherProps> = ({
   handleClose,
   teacher,
 }) => {
-  const [deleteTeacher, { data, loading }] = useMutation(DELETE_TEACHER);
+  const [deleteTeacher, { loading }] = useMutation(DELETE_TEACHER);
 
   const handleDelete = async () => {
     if (teacher.id) {
