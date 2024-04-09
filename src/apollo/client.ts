@@ -1,15 +1,21 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import storage from "../storage/Storage";
 
-// const httpLink = new HttpLink({ uri: process.env.REACT_APP_API_URL });
-
-// const appLink = from([errorLink, httpLink]);
-
-// const client = new ApolloClient({
-//   link: appLink,
-//   cache: new InMemoryCache(),
-// });
-const client = new ApolloClient({
+const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
+});
+const authLink = setContext((_, { headers }) => {
+  const token = storage.get("accessToken");
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "" || "",
+    },
+  };
+});
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

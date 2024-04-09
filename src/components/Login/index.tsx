@@ -41,14 +41,13 @@ const Login: FC = () => {
           password: loginData.password,
         },
       },
+    }).then((res) => {
+      if (res?.data?.login?.id) {
+        storage.set("accessToken", res.data.login.accessToken);
+        navigate(AppRoute.Teachers);
+      }
     });
   };
-
-  if (data?.login?.id) {
-    console.log("data.login.accessToken", data.login.accessToken);
-    storage.set("accessToken", data.login.accessToken);
-    navigate(AppRoute.Teachers);
-  }
 
   // console.log("data", data);
   // if (error) {

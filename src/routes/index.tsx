@@ -30,23 +30,6 @@ const routes = createRoutesFromElements(
 export const router = createBrowserRouter(routes);
 
 const AppRouterProvider: FC = () => {
-  const [loading, setLoading] = useState(true);
-  const accessToken = storage.get("accessToken");
-
-  console.log("accessToken route", accessToken);
-
-  // useEffect(() => {
-  //   if (accessToken) {
-  //     // find current user
-  //     // } else {
-  //     setLoading(false);
-  //   }
-  // }, [accessToken]);
-
-  // if (loading) {
-  //   return <Spinner />;
-  // }
-
   return <RouterProvider router={router} />;
 };
 

@@ -44,6 +44,7 @@ const AppHeader: FC<Props> = ({ open, setOpen }) => {
 
   const logout = () => {
     storage.remove("accessToken");
+    navigate(AppRoute.Login);
   };
 
   return (
