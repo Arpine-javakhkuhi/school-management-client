@@ -40,7 +40,9 @@ const EditSubjectDialog: FC<EditSubjectProps> = ({
   handleClose,
   subject,
 }) => {
-  const [editSubject, { loading }] = useMutation(EDIT_SUBJECT);
+  const [editSubject, { loading }] = useMutation(EDIT_SUBJECT, {
+    refetchQueries: [GET_SUBJECTS_LIST],
+  });
   const { data } = useQuery(GET_TEACHERS_LIST);
 
   const {
@@ -64,7 +66,6 @@ const EditSubjectDialog: FC<EditSubjectProps> = ({
         editSubjectId: +subject.id,
         editSubjectInput: input,
       },
-      refetchQueries: [{ query: GET_SUBJECTS_LIST }],
     })
       .then(() => {
         reset();

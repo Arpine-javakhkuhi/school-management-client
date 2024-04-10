@@ -55,13 +55,6 @@ const SubjectsTable = () => {
   }
   return (
     <>
-      {data.isSuccess && (
-        <ResponseMsg
-          message={data.message}
-          setAlert={data.isSuccess}
-          type="success"
-        />
-      )}
       <Paper sx={{ width: "90%", overflow: "hidden" }}>
         <TableContainer
           sx={{

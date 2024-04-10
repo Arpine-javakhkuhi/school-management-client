@@ -31,7 +31,9 @@ const EditTeacherDialog: FC<EditTeacherProps> = ({
   handleClose,
   teacher,
 }) => {
-  const [editTeacher, { loading }] = useMutation(EDIT_TEACHER);
+  const [editTeacher, { loading }] = useMutation(EDIT_TEACHER, {
+    refetchQueries: [GET_TEACHERS_LIST],
+  });
 
   const {
     handleSubmit,
@@ -54,7 +56,6 @@ const EditTeacherDialog: FC<EditTeacherProps> = ({
           lastName: lastName.trim(),
         },
       },
-      refetchQueries: [{ query: GET_TEACHERS_LIST }],
     })
       .then(() => {
         reset();

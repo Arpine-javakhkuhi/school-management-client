@@ -25,14 +25,15 @@ const DeleteTeacherDialog: FC<DeleteTeacherProps> = ({
   handleClose,
   teacher,
 }) => {
-  const [deleteTeacher, { loading }] = useMutation(DELETE_TEACHER);
+  const [deleteTeacher, { loading }] = useMutation(DELETE_TEACHER, {
+    refetchQueries: [GET_TEACHERS_LIST],
+  });
 
   const handleDelete = async () => {
     deleteTeacher({
       variables: {
         deleteTeacherId: +teacher.id,
       },
-      refetchQueries: [{ query: GET_TEACHERS_LIST }],
     }).catch(() => {});
 
     handleClose();

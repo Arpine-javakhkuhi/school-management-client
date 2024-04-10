@@ -30,7 +30,9 @@ interface Props {
 }
 
 const CreateSubjectDialog: FC<Props> = ({ open, handleClose }) => {
-  const [createSubject, { loading }] = useMutation(CREATE_SUBJECT);
+  const [createSubject, { loading }] = useMutation(CREATE_SUBJECT, {
+    refetchQueries: [GET_SUBJECTS_LIST],
+  });
   const { data } = useQuery(GET_TEACHERS_LIST);
 
   const {
@@ -51,7 +53,6 @@ const CreateSubjectDialog: FC<Props> = ({ open, handleClose }) => {
       variables: {
         createSubjectInput: input,
       },
-      refetchQueries: [{ query: GET_SUBJECTS_LIST }],
     }).then(() => {
       reset();
       handleClose();

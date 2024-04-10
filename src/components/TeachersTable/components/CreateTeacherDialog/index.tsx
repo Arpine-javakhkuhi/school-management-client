@@ -25,7 +25,9 @@ interface Props {
 }
 
 const CreateTeacherDialog: FC<Props> = ({ open, handleClose }) => {
-  const [createTeacher, { loading }] = useMutation(CREATE_TEACHER);
+  const [createTeacher, { loading }] = useMutation(CREATE_TEACHER, {
+    refetchQueries: [GET_TEACHERS_LIST],
+  });
 
   const {
     handleSubmit,
@@ -43,7 +45,6 @@ const CreateTeacherDialog: FC<Props> = ({ open, handleClose }) => {
           firstName: data.firstName.trim(),
           lastName: data.lastName.trim(),
         },
-        refetchQueries: [{ query: GET_TEACHERS_LIST }],
       },
     }).then(() => {
       reset();

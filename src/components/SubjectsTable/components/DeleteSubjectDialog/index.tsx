@@ -25,14 +25,15 @@ const DeleteSubjectDialog: FC<DeleteSubjectProps> = ({
   handleClose,
   subject,
 }) => {
-  const [deleteSubject, { loading }] = useMutation(DELETE_SUBJECT);
+  const [deleteSubject, { loading }] = useMutation(DELETE_SUBJECT, {
+    refetchQueries: [GET_SUBJECTS_LIST],
+  });
 
   const handleDelete = async () => {
     deleteSubject({
       variables: {
         deleteSubjectId: +subject.id,
       },
-      refetchQueries: [{ query: GET_SUBJECTS_LIST }],
     }).catch(() => {});
 
     handleClose();
